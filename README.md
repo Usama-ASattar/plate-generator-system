@@ -95,7 +95,7 @@ The app maintains a realistic preview with proportional scaling and persists con
 - **Tailwind CSS**
 - **HTML5 Canvas API**
 - **Intl.NumberFormat** for locale formatting
-- **LocalStorage API**
+- **LocalStorage**
 
 <a name="installation--setup"></a>
 
