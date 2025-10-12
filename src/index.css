@@ -1,0 +1,12 @@
+/* Make full-height layouts work */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+/* Tailwind base if you use Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
