@@ -111,8 +111,8 @@ Ensure you have the following installed:
 ### 2. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/plate-generator.git
-cd plate-generator
+git clone https://github.com/Usama-ASattar/plate-generator-system.git
+cd plate-generator-system
 ```
 
 ### 3. Install dependencies
