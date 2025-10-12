@@ -203,7 +203,7 @@ npm run preview
 ### 🎞️ Live Demo
 
 If you have a deployed version:
-👉 [Try it here](https://your-live-demo-link.com)
+👉 [Try it here](https://plate-generator-system-psi.vercel.app/)
 
 <a name="author"></a>
 
