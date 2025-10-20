@@ -28,3 +28,7 @@ export function saveJSONDebounced(key, value, delay = 120) {
   const id = setTimeout(() => saveJSON(key, value), delay);
   timers.set(key, id);
 }
+
+export function formatNumber(value, locale = "en-US", options = {}) {
+  return new Intl.NumberFormat(locale, options).format(value);
+}
