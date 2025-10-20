@@ -256,8 +256,8 @@ npm run preview
 
 ### 🖥️ Desktop View
 
-![Plate Generator Desktop Preview](./docs/preview-desktop.png)
-![Plate Generator Desktop Preview](./docs/preview-desktop-2.png)
+![Plate Generator Desktop Preview](./docs/preview-destop.png)
+![Plate Generator Desktop Preview](./docs/preview-destop-2.png)
 
 ### 📱 Mobile View
 
