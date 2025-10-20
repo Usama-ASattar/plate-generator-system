@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { cn } from "./utils";
+import { cn } from "../../utils/utils";
 
 const DimensionInput = memo(function DimensionInput({
   id,

@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 
-/* tiny helper for className composition */
 export const cn = (...a) => a.filter(Boolean).join(" ");
 
 /* unit helpers */

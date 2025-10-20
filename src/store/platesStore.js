@@ -1,53 +1,63 @@
 import { useSyncExternalStore } from "react";
-import { loadPlates, savePlates } from "../utils/storage";
+import { loadJSON, saveJSONDebounced } from "../utils/storage";
 
-const DEFAULT_PLATE = { width: 250, height: 128 };
-const MIN_PLATES = 1;
-const MAX_PLATES = 10;
+const LS_KEY = "pg:plates/v1";
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
-let state = { plates: loadPlates() || [DEFAULT_PLATE] };
+const initial = loadJSON(LS_KEY, {
+  plates: [{ width: 120, height: 60 }], // default plate
+});
+
+let state = validate(initial);
 const listeners = new Set();
 
-function emit() {
-  savePlates(state.plates);
+function validate(s) {
+  const arr = Array.isArray(s?.plates) ? s.plates : [];
+  // sanitize and clamp into valid ranges
+  const safe = arr.map((p) => ({
+    width: clamp(Number(p?.width) || 120, 20, 300),
+    height: clamp(Number(p?.height) || 60, 30, 128),
+  }));
+  if (!safe.length) safe.push({ width: 120, height: 60 });
+  return { plates: safe };
+}
+
+function notify() {
   for (const l of listeners) l();
+  saveJSONDebounced(LS_KEY, state);
 }
 
-export function subscribe(fn) {
-  listeners.add(fn);
-  return () => listeners.delete(fn);
+export function subscribe(listener) {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
 }
-
 export function getSnapshot() {
   return state;
 }
-
 export function usePlatesStore() {
   return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 }
 
-/* Actions */
 export function addPlate() {
-  if (state.plates.length >= MAX_PLATES) return;
-  state = { ...state, plates: [...state.plates, { ...DEFAULT_PLATE }] };
-  emit();
+  state = { ...state, plates: [...state.plates, { width: 120, height: 60 }] };
+  notify();
 }
 
 export function removePlate(index) {
-  if (state.plates.length <= MIN_PLATES) return;
-  state = { ...state, plates: state.plates.filter((_, i) => i !== index) };
-  emit();
-}
-
-export function updatePlate(index, key, value) {
-  const next = state.plates.map((p, i) =>
-    i === index ? { ...p, [key]: value } : p
-  );
+  if (state.plates.length <= 1) return;
+  const next = state.plates.filter((_, i) => i !== index);
   state = { ...state, plates: next };
-  emit();
+  notify();
 }
 
-export function setPlates(next) {
-  state = { ...state, plates: [...next] };
-  emit();
+export function updatePlate(index, key, valueCm) {
+  const next = state.plates.slice();
+  if (!next[index]) return;
+
+  if (key === "width") valueCm = clamp(valueCm, 20, 300);
+  if (key === "height") valueCm = clamp(valueCm, 30, 128);
+
+  next[index] = { ...next[index], [key]: valueCm };
+  state = { ...state, plates: next };
+  notify();
 }

@@ -1,18 +1,30 @@
-const KEY = "plates_config_v1";
+const hasLS = typeof window !== "undefined" && !!window.localStorage;
 
-export function savePlates(plates) {
+export function loadJSON(key, fallback) {
+  if (!hasLS) return fallback;
   try {
-    localStorage.setItem(KEY, JSON.stringify(plates));
-  } catch (err) {
-    console.error("Failed to save plates", err);
+    const raw = window.localStorage.getItem(key);
+    if (!raw) return fallback;
+    return JSON.parse(raw);
+  } catch {
+    return fallback;
   }
 }
 
-export function loadPlates() {
+export function saveJSON(key, value) {
+  if (!hasLS) return;
   try {
-    const s = localStorage.getItem(KEY);
-    return s ? JSON.parse(s) : null;
+    window.localStorage.setItem(key, JSON.stringify(value));
   } catch {
-    return null;
+    // ignore quota/security errors
   }
+}
+
+// Small debouncer to avoid writing on every keystroke
+const timers = new Map();
+export function saveJSONDebounced(key, value, delay = 120) {
+  if (!hasLS) return;
+  clearTimeout(timers.get(key));
+  const id = setTimeout(() => saveJSON(key, value), delay);
+  timers.set(key, id);
 }

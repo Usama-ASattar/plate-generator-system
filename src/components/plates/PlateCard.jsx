@@ -1,6 +1,6 @@
 import { memo, useMemo } from "react";
 import DimensionInput from "./DimensionInput";
-import { cn, fmt, parseLocaleNumber, toCm, CM_PER_IN } from "./utils";
+import { cn, fmt, parseLocaleNumber, toCm, CM_PER_IN } from "../../utils/utils";
 
 const PlateCard = memo(function PlateCard({
   index,
@@ -104,13 +104,17 @@ const PlateCard = memo(function PlateCard({
                 error={wErr}
               />
               {isActive && (
-                <div className="mt-1 px-10 text-xs text-gray-400">
+                <div className="mt-1 px-8 text-xs text-gray-400">
                   {secondaryWidth}
                 </div>
               )}
             </div>
 
-            <div className="text-gray-500 text-base md:text-lg text-center select-none">
+            <div
+              className={`text-gray-500 text-base md:text-lg text-center select-none ${
+                isActive ? "pb-6" : "pb-1"
+              }`}
+            >
               x
             </div>
 
@@ -125,7 +129,7 @@ const PlateCard = memo(function PlateCard({
                 error={hErr}
               />
               {isActive && (
-                <div className="mt-1 px-10 text-xs text-gray-400">
+                <div className="mt-1 px-8 text-xs text-gray-400">
                   {secondaryHeight}
                 </div>
               )}
