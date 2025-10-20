@@ -267,7 +267,6 @@ npm run preview
 
 ### 🎞️ Live Demo
 
-If deployed:
 👉 [Try it here](https://plate-generator-system-psi.vercel.app/)
 
 ---
